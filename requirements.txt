@@ -1,0 +1,4 @@
+django>=3.0.9
+wagtail>=2.10.1
+flake8>=3.8.3
+git+https://github.com/GrappleGQL/wagtail-grapple.git
