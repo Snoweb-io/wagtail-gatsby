@@ -2,7 +2,8 @@ import React from "react"
 import {graphql} from "gatsby"
 
 export default function TestTemplate({data}) {
-    const {page} = data.wagtail
+    const {page} = data.wagtail;
+    console.log(page);
     return (
         <div>
             <h1>test</h1>

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'taggit',
     "grapple",
     "graphene_django",
+    'corsheaders',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -103,3 +105,10 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 MEDIA_URL = '/media/'
+
+PREVIEW_URL = '/preview'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4243",
+    "http://localhost:8000",
+]
