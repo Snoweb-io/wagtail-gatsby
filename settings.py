@@ -112,3 +112,5 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:4243",
     "http://localhost:8000",
 ]
+
+BASE_URL = 'http://localhost:8000'

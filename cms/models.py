@@ -15,8 +15,10 @@ from grapple.models import (
     GraphQLStreamfield,
 )
 
-from .blocks import TextBlock, ImageBlock
+from .blocks import MyTextBlock, MyImageBlock
 
+
+# https://github.com/torchbox/wagtail-torchbox/blob/master/headlesspreview/models.py
 
 class PagePrev(models.Model):
     token = models.CharField(max_length=255, unique=True)
@@ -92,8 +94,8 @@ class TestPage(HeadlessPrev, Page):
     template = 'cms/preview.html'
 
     body = StreamField([
-        ('text', TextBlock()),
-        ('image', ImageBlock()),
+        ('text', MyTextBlock()),
+        ('image', MyImageBlock()),
     ], blank=True)
 
     content_panels = Page.content_panels + [

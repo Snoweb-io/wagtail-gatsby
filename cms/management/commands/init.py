@@ -6,7 +6,7 @@ from wagtail.core.models import Page, Site
 from wagtail.images.models import Image
 
 from cms.models import TestPage
-from cms.blocks import TextBlock, ImageBlock
+from cms.blocks import MyTextBlock, MyImageBlock
 from cms import constants
 
 
@@ -20,8 +20,8 @@ class Command(BaseCommand):
         Page.objects.all().delete()
         Image.objects.all().delete()
 
-        text = TextBlock()
-        image = ImageBlock()
+        text = MyTextBlock()
+        image = MyImageBlock()
 
         # Create admin user
 
