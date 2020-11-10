@@ -1,43 +1,72 @@
-import React from "react"
-import {graphql} from "gatsby"
-import * as blocks from '../blocks';
+import React from 'react';
+import { graphql } from 'gatsby';
 
-export default function TestTemplate({data}) {
-    const {page} = data.wagtail;
-    console.log(page);
-    return (
-        <div>
-            {page.body.map((block) => {
-                const BlockComponent = blocks[block.blockType];
-                console.log(blocks[block.blockType]);
-                return (
-                    <BlockComponent {...block} />
-                )
-            })}
-        </div>
-    )
+import * as blocks from '../blocks';
+import { Base } from '../layouts';
+
+export default function TestTemplate({ data }) {
+  const { page } = data.wagtail;
+  return (
+    <Base page={page}>
+      {page.body.map((block, key) => {
+        const BlockComponent = blocks[block.blockType];
+        return <BlockComponent key={key} {...block} />;
+      })}
+    </Base>
+  );
 }
 
 export const query = graphql`
-    query($slug: String) {
-        wagtail {
-            page(slug: $slug) {
-                ... on TestPage {
-                    body {
-                        ... on MyTextBlock {
-                            blockType
-                            text
-                        }
-                        ... on MyImageBlock {
-                            blockType
-                            image {
-                                url
-                                title
-                            }
-                        }
-                    }
-                }
+  query {
+    wagtail {
+      page(slug: "perfect") {
+        seoTitle
+        seoDescription
+        lastPublishedAt
+        ... on TestPage {
+          body {
+            ... on MyTextBlock {
+              blockType
+              text
             }
+            ... on MyImageBlock {
+              blockType
+              image {
+                url
+                title
+              }
+            }
+          }
         }
+      }
     }
-`
+  }
+`;
+
+/*
+export const query = graphql`
+  query Test($slug: String) {
+    wagtail {
+      page(slug: $slug) {
+        seoTitle
+        seoDescription
+        lastPublishedAt
+        ... on TestPage {
+          body {
+            ... on MyTextBlock {
+              blockType
+              text
+            }
+            ... on MyImageBlock {
+              blockType
+              image {
+                url
+                title
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;*/

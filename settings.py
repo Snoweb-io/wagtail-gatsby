@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "grapple",
     "graphene_django",
     'corsheaders',
+    'wagtail_headless_preview',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -114,3 +115,8 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 BASE_URL = 'http://localhost:8000'
+
+HEADLESS_PREVIEW_CLIENT_URLS = {
+    'default': 'http://localhost:8000/',
+}
+HEADLESS_PREVIEW_LIVE = True

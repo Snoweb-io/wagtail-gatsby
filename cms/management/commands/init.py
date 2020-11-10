@@ -81,16 +81,14 @@ class Command(BaseCommand):
 
         # Page Examples -------------------------------------------------------
 
-        # Goal : get perfect score with yoast
-
         content_page = TestPage(
             title="Example 1 - PerfectPage",
-            seo_title="perfect yoast page",
-            search_description="perfect yoast page",
+            seo_title="Perfect",
+            search_description="Perfect",
             slug='perfect',
             body=json.dumps([
                 text.mock(constants.TEXT_1),
-                image.mock('perfect yoast page'),
+                image.mock('Perfect'),
                 text.mock(constants.TEXT_1),
             ])
         )
