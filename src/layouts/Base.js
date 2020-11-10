@@ -1,10 +1,19 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { createGlobalStyle } from 'styled-components';
+
+import { Card } from '../components';
+
+const GlobalStyle = createGlobalStyle`
+  h1, h2, h3, h4, h5, h6, p {
+    font-family: 'Lato', sans-serif;
+  }
+`;
 
 const Base = (props) => {
   const { page, children } = props;
   return (
-    <div>
+    <>
       <Helmet>
         <meta charSet="utf-8" />
         <title>{page.seoTitle}</title>
@@ -25,8 +34,9 @@ const Base = (props) => {
         <meta name="twitter:card" content="" />
         <meta name="theme-color" content="" />
       </Helmet>
-      {children}
-    </div>
+      <GlobalStyle />
+      <Card>{children}</Card>
+    </>
   );
 };
 

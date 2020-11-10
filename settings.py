@@ -1,7 +1,9 @@
 import os
+import environ
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DEBUG = True
+env = environ.Env()
+environ.Env.read_env(BASE_DIR + '/.env')
 
 DATABASES = {
     'default': {
@@ -9,7 +11,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-SECRET_KEY = '[V$xMycv[(YwVThQD+p[s@Wb@Ygy@:`M%D3I8Fs2tJ^Aw#ac$AJ65".*]uwPaK_'
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -34,8 +35,9 @@ INSTALLED_APPS = [
     'wagtail.contrib.frontend_cache',
 
     'taggit',
-    "grapple",
-    "graphene_django",
+    'grapple',
+    'graphene_django',
+    'channels',
     'corsheaders',
     'wagtail_headless_preview',
 
@@ -52,33 +54,68 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.gzip.GZipMiddleware',
 ]
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'wagtail.contrib.settings.context_processors.settings',
             ],
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ]
         },
     },
+]
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+DEBUG = True
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_URL = '/media/'
+ROOT_URLCONF = 'urls'
+WSGI_APPLICATION = 'wsgi.application'
+SITE_ID = 1
+SECRET_KEY = '[V$xMycv[(YwVThQD+p[s@Wb@Ygy@:`M%D3I8Fs2tJ^Aw#ac$AJ65".*]uwPaK_'
+
+
+# End of Django Settings
+
+
+WAGTAIL_SITE_NAME = 'Wagtail Gatsby'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4243",
+    "http://localhost:8000",
 ]
 
 GRAPHENE = {
@@ -91,32 +128,32 @@ GRAPPLE_APPS = {
     "cms": ""
 }
 
-SITE_ID = 1
-WAGTAIL_SITE_NAME = 'Wagtail Yoast'
-ROOT_URLCONF = 'urls'
-
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-]
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
-MEDIA_URL = '/media/'
-
-PREVIEW_URL = '/preview'
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4243",
-    "http://localhost:8000",
-]
-
 BASE_URL = 'http://localhost:8000'
 
 HEADLESS_PREVIEW_CLIENT_URLS = {
-    'default': 'http://localhost:8000/',
+    'default': 'http://localhost:8000/preview',
 }
+
 HEADLESS_PREVIEW_LIVE = True
+
+
+# AWS
+
+
+AWS_ACCESS_KEY_ID = env.str('AWS_ACCESS_KEY_ID', None)
+AWS_SECRET_ACCESS_KEY = env.str('AWS_SECRET_ACCESS_KEY', None)
+
+if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+
+    AWS_S3_REGION_NAME = env.str('AWS_S3_REGION_NAME')
+    AWS_S3_CUSTOM_DOMAIN = env.str('AWS_S3_CUSTOM_DOMAIN')
+    AWS_STORAGE_BUCKET_NAME = env.str('AWS_STORAGE_BUCKET_NAME')
+
+    AWS_IS_GZIPPED = True
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_FILE_OVERWRITE = False
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_URL = AWS_S3_CUSTOM_DOMAIN + '/'
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'public, max-age=31536000',
+    }

@@ -6,6 +6,7 @@ import { Base } from '../layouts';
 
 export default function TestTemplate({ data }) {
   const { page } = data.wagtail;
+  console.log(data);
   return (
     <Base page={page}>
       {page.body.map((block, key) => {
@@ -45,7 +46,7 @@ export const query = graphql`
 
 /*
 export const query = graphql`
-  query Test($slug: String) {
+  query($slug: String) {
     wagtail {
       page(slug: $slug) {
         seoTitle
@@ -69,4 +70,5 @@ export const query = graphql`
       }
     }
   }
-`;*/
+`;
+*/

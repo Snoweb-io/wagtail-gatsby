@@ -1,7 +1,12 @@
-const { createWagtailPages } = require("gatsby-source-wagtail/pages.js")
+const { createWagtailPages } = require("gatsby-source-wagtail/pages.js");
 
 exports.createPages = ({ graphql, actions }) => {
-  return createWagtailPages({
+  return createWagtailPages(
+    {
       "cms.TestPage": "templates/test.js",
-  }, graphql, actions, [])
-}
+    },
+    graphql,
+    actions,
+    []
+  );
+};
