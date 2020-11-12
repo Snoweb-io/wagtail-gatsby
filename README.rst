@@ -27,4 +27,4 @@ Run Gatsby Server
 
 ::
 
-    gatsby develop
+    npm run build-plugin && gatsby clean && gatsby develop

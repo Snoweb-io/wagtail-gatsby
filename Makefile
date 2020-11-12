@@ -11,4 +11,4 @@ superuser:
 	python manage.py createsuperuser
 
 run:
-	rm -rf ./.cache && rm -rf ./public && gatsby develop
+	npm run build-plugin && gatsby clean && gatsby develop

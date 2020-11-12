@@ -4,7 +4,7 @@ import { graphql } from 'gatsby';
 import * as blocks from '../blocks';
 import { Base } from '../layouts';
 
-export default function TestTemplate({ data }) {
+export default ({ data }) => {
   const { page } = data.wagtail;
   console.log(data);
   return (
@@ -15,36 +15,8 @@ export default function TestTemplate({ data }) {
       })}
     </Base>
   );
-}
+};
 
-export const query = graphql`
-  query {
-    wagtail {
-      page(slug: "perfect") {
-        seoTitle
-        seoDescription
-        lastPublishedAt
-        ... on TestPage {
-          body {
-            ... on MyTextBlock {
-              blockType
-              text
-            }
-            ... on MyImageBlock {
-              blockType
-              image {
-                url
-                title
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-/*
 export const query = graphql`
   query($slug: String) {
     wagtail {
@@ -71,4 +43,3 @@ export const query = graphql`
     }
   }
 `;
-*/

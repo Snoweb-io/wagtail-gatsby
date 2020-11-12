@@ -11,7 +11,7 @@ module.exports = {
       resolve: "gatsby-source-wagtail",
       options: {
         url: 'http://localhost:4243/graphql/',
-        websocketUrl: 'http://localhost:4243/graphql/',
+        websocketUrl: 'ws://localhost:4243',
       },
     },
     {

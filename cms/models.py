@@ -10,8 +10,6 @@ from .blocks import MyTextBlock, MyImageBlock
 
 
 class TestPage(HeadlessPreviewMixin, Page):
-    template = 'cms/preview.html'
-
     body = StreamField([
         ('text', MyTextBlock()),
         ('image', MyImageBlock()),

@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -107,22 +108,15 @@ WSGI_APPLICATION = 'wsgi.application'
 SITE_ID = 1
 SECRET_KEY = '[V$xMycv[(YwVThQD+p[s@Wb@Ygy@:`M%D3I8Fs2tJ^Aw#ac$AJ65".*]uwPaK_'
 
-
 # End of Django Settings
 
 
 WAGTAIL_SITE_NAME = 'Wagtail Gatsby'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4243",
-    "http://localhost:8000",
-]
+CORS_ORIGIN_ALLOW_ALL = True
 
 GRAPHENE = {
     "SCHEMA": "grapple.schema.schema",
-    'MIDDLEWARE': [
-        'graphene_django.debug.DjangoDebugMiddleware',
-    ]
 }
 GRAPPLE_APPS = {
     "cms": ""
@@ -136,7 +130,6 @@ HEADLESS_PREVIEW_CLIENT_URLS = {
 
 HEADLESS_PREVIEW_LIVE = True
 
-
 # AWS
 
 
@@ -144,7 +137,6 @@ AWS_ACCESS_KEY_ID = env.str('AWS_ACCESS_KEY_ID', None)
 AWS_SECRET_ACCESS_KEY = env.str('AWS_SECRET_ACCESS_KEY', None)
 
 if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
-
     AWS_S3_REGION_NAME = env.str('AWS_S3_REGION_NAME')
     AWS_S3_CUSTOM_DOMAIN = env.str('AWS_S3_CUSTOM_DOMAIN')
     AWS_STORAGE_BUCKET_NAME = env.str('AWS_STORAGE_BUCKET_NAME')
@@ -157,3 +149,32 @@ if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'public, max-age=31536000',
     }
+
+# LOGGING
+
+DJANGO_LOG_LEVEL = env.str('DJANGO_LOG_LEVEL', 'DEBUG')
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'cms': {
+            'handlers': ['console'],
+            'level': DJANGO_LOG_LEVEL,
+        },
+    },
+}
+
+
+ASGI_APPLICATION = "asgi.channel_layer"
+CHANNELS_WS_PROTOCOLS = ["graphql-ws"]
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "grapple.urls.channel_routing",
+    }
+}

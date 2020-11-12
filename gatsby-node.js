@@ -1,4 +1,5 @@
-const { createWagtailPages } = require("gatsby-source-wagtail/pages.js");
+const { createWagtailPages } = require("./plugins/gatsby-source-wagtail/pages");
+
 
 exports.createPages = ({ graphql, actions }) => {
   return createWagtailPages(
