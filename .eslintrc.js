@@ -1,4 +1,6 @@
 module.exports = {
-  root: true,
-  extends: '@react-native-community',
-};
+  globals: {
+    __PATH_PREFIX__: true,
+  },
+  extends: `react-app`,
+}
