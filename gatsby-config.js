@@ -4,6 +4,12 @@
  * See: https://www.gatsbyjs.com/docs/gatsby-config/
  */
 
+const graphqlOptions = {
+  typeName: 'wagtail',
+  fieldName: 'wagtail',
+  url: 'http://localhost:4243/graphql/',
+};
+
 module.exports = {
   plugins: [
     "gatsby-plugin-react-helmet",
@@ -12,6 +18,17 @@ module.exports = {
       options: {
         url: 'http://localhost:4243/graphql/',
         websocketUrl: 'ws://localhost:4243',
+      },
+    },
+    {
+      resolve: 'gatsby-source-graphql',
+      options: graphqlOptions,
+    },
+    {
+      resolve: 'gatsby-plugin-graphql-preview',
+      options: {
+        ...graphqlOptions,
+        previewQueryParam: 'preview',
       },
     },
     {

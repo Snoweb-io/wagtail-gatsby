@@ -1,8 +1,5 @@
 const fs = require('fs-extra');
-const request = require('graphql-request');
 const { createRemoteFileNode } = require('gatsby-source-filesystem');
-const { sourceNodes } = require('./graphql-nodes');
-const { getRootQuery } = require('./getRootQuery');
 const { generateImageFragments } = require('./fragments');
 const fetch = require("node-fetch");
 
@@ -21,8 +18,6 @@ exports.onPreInit = ({}, options) => {
   options.fieldName = options.fieldName || 'wagtail';
   options.typeName = options.typeName || 'wagtail';
 };
-
-exports.sourceNodes = sourceNodes;
 
 exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   const config = getConfig();
@@ -121,7 +116,7 @@ exports.onPreExtractQueries = async ({ store, actions }, options) => {
     );
 
     // Copy the boilerplate file and replace the placeholder with actual modal name
-    fs.readFile(
+    /*fs.readFile(
       './plugins/gatsby-source-wagtail/preview.boilerplate.js',
       (err, fileData) => {
         if (err) {
@@ -140,7 +135,7 @@ exports.onPreExtractQueries = async ({ store, actions }, options) => {
           }
         );
       }
-    );
+    );*/
 
     // Generate redirects for Netlify, controlled by Wagtail Admin.
     data.redirects.map((redirect) =>
@@ -184,3 +179,4 @@ exports.createResolvers = (
     });
   });
 };
+
