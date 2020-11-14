@@ -1,4 +1,5 @@
 const fs = require('fs-extra');
+const path = require("path")
 const { createRemoteFileNode } = require('gatsby-source-filesystem');
 const { generateImageFragments } = require('./fragments');
 const fetch = require("node-fetch");
@@ -13,11 +14,12 @@ const queryBackend = (query, url, headers) =>
     }),
   }).then((result) => result.json());
 
-// Monkeypatch options to allow default fieldName and typeName
 exports.onPreInit = ({}, options) => {
+  // Monkeypatch options to allow default fieldName and typeName
   options.fieldName = options.fieldName || 'wagtail';
   options.typeName = options.typeName || 'wagtail';
 };
+
 
 exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   const config = getConfig();
