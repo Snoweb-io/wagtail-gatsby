@@ -1,32 +1,21 @@
-import logging
-from django.conf import settings
-from django.shortcuts import redirect
+from django.db import models
+from wagtail.contrib.settings.models import register_setting
+from wagtail.contrib.settings.models import BaseSetting
+from wagtail.admin.edit_handlers import TabbedInterface, ObjectList
+from wagtail.admin.edit_handlers import FieldPanel
+from modelcluster.models import ClusterableModel
 from wagtail.core.fields import StreamField
-from wagtail.core.models import Page
+from wagtail.core.models import Page, Site
 from wagtail.admin.edit_handlers import StreamFieldPanel
 from grapple.models import (
-    GraphQLStreamfield,
+    GraphQLStreamfield, GraphQLString
 )
 
 from .blocks import MyTextBlock, MyImageBlock
+from .mixins import HeadlessMixin
 
 
-class HeadlessMixin(object):
-    def get_client_root_url(self):
-        try:
-            return settings.HEADLESS_PREVIEW_CLIENT_URLS[self.get_site().hostname]
-        except (AttributeError, KeyError):
-            return settings.HEADLESS_PREVIEW_CLIENT_URLS["default"]
-
-    def get_preview_url(self):
-        return "%s%s?preview=1" % (
-            self.get_client_root_url(),
-            self.slug
-        )
-
-    def serve_preview(self, request, mode_name):
-        return redirect(self.get_preview_url())
-
+# Pages
 
 class TestPage(HeadlessMixin, Page):
     body = StreamField([
@@ -41,3 +30,29 @@ class TestPage(HeadlessMixin, Page):
     graphql_fields = [
         GraphQLStreamfield("body"),
     ]
+
+
+# Settings
+
+
+@register_setting
+class ThemeSettings(BaseSetting, ClusterableModel):
+    primary = models.CharField(default='', blank=True, max_length=10)
+    secondary = models.CharField(default='', blank=True, max_length=10)
+
+    colors_panel = [
+        FieldPanel('primary'),
+        FieldPanel('secondary'),
+    ]
+
+    edit_handler = TabbedInterface([
+        ObjectList(colors_panel, heading='Colors'),
+    ])
+
+    graphql_fields = [
+        GraphQLString("primary"),
+        GraphQLString("secondary"),
+    ]
+
+    class Meta:
+        verbose_name = 'Theme'

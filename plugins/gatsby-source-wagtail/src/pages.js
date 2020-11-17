@@ -32,8 +32,8 @@ export const createWagtailPages = (
         if (matchingKey) {
           const template = pageMap[matchingKey];
           createPage({
-            path: '/' + page.slug,
-            matchPath: '/' + page.slug,
+            path: page.url,
+            matchPath: page.url,
             component: path.resolve('./src/' + template),
             lastPublishedAt: page.lastPublishedAt,
             context: page,

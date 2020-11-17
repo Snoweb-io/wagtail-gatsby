@@ -18,7 +18,7 @@ ALLOWED_HOSTS = [
 ]
 
 INSTALLED_APPS = [
-    'cms',
+    'cms.apps.CmsConfig',
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -32,12 +32,12 @@ INSTALLED_APPS = [
     'wagtail.admin',
     'wagtail.core',
     'wagtail.contrib.settings',
-    'wagtail.contrib.frontend_cache',
 
     'taggit',
     'grapple',
     'graphene_django',
     'corsheaders',
+    'django_celery_results',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -109,7 +109,9 @@ SECRET_KEY = '[V$xMycv[(YwVThQD+p[s@Wb@Ygy@:`M%D3I8Fs2tJ^Aw#ac$AJ65".*]uwPaK_'
 # End of Django Settings
 
 
-WAGTAIL_SITE_NAME = 'Wagtail Gatsby'
+WAGTAIL_SITE_NAME = env.str('WAGTAIL_SITE_NAME', 'Wagtail Gatsby')
+
+WAGTAIL_APPEND_SLASH = True
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -123,7 +125,7 @@ GRAPPLE_APPS = {
 BASE_URL = 'http://localhost:8000'
 
 HEADLESS_PREVIEW_CLIENT_URLS = {
-    'default': 'http://localhost:8000/',
+    'localhost': 'http://localhost:8000',
 }
 
 HEADLESS_PREVIEW_LIVE = True
@@ -166,3 +168,12 @@ LOGGING = {
         },
     },
 }
+
+# CELERY
+
+CMS_BROKER_URL = env.str('CMS_BROKER_URL', 'redis://localhost:6379/0')
+CMS_RESULT_BACKEND = 'django-db'
+CMS_CACHE_BACKEND = 'django-cache'
+CMS_TIMEZONE = env.str('CMS_TIMEZONE', 'Europe/Paris')
+CMS_TASK_TRACK_STARTED = True
+CMS_TASK_TIME_LIMIT = 30 * 60

@@ -6,3 +6,6 @@ git+https://github.com/GrappleGQL/wagtail-grapple.git
 django-environ==0.4.5
 django_storages==1.9.1
 boto3==1.6.19
+celery==4.4.7
+django-celery-results==1.2.1
+ipython==7.16.1

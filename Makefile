@@ -10,5 +10,12 @@ mm:
 superuser:
 	python manage.py createsuperuser
 
-run:
+develop:
 	npm run build-plugin && gatsby clean && gatsby develop
+
+worker:
+	celery multi stopwait cms_worker --pidfile="./celery/%n.pid" --logfile="./celery/%n%I.log"
+	celery multi start cms_worker -A cms --pidfile="./celery/%n.pid" --logfile="./celery/%n%I.log"
+
+worker_dev:
+	celery -A cms purge && celery -A cms worker -l info
