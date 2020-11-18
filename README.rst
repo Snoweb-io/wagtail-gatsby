@@ -39,7 +39,7 @@ First steps
     python manage.py init
 
 
-**Add your AWS preferences in .env file**
+**Add your preferences in .env file**
 
 ::
 
@@ -55,6 +55,11 @@ First steps
 
     # If you use AWS CloudFront
     AWS_DISTRIBUTION_ID=*********
+
+    # Configure and add your Broker URL used by Celery
+    # https://docs.celeryproject.org/en/stable/getting-started/brokers/
+    # Example with redis
+    CMS_BROKER_URL='redis://localhost:6379/0'
 
 Play
 ----
