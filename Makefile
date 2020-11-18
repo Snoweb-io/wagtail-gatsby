@@ -18,4 +18,7 @@ worker:
 	celery multi start cms_worker -A cms --pidfile="./celery/%n.pid" --logfile="./celery/%n%I.log"
 
 worker_dev:
-	celery -A cms purge && celery -A cms worker -l info
+	yes | celery -A cms purge && celery -A cms worker -l info
+
+deploy:
+	gatsby build && npm run deploy && aws cloudfront create-invalidation --distribution-id $AWS_DISTRIBUTION_ID --paths "/*"

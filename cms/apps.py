@@ -1,3 +1,4 @@
+import os
 import logging
 from django.apps import AppConfig
 from django.conf import settings
@@ -8,8 +9,9 @@ from .tasks import build, develop
 logger = logging.getLogger('cms')
 
 
-def signal_build(**kwargs):
-    build.delay()
+def signal_build(sender, instance, **kwargs):
+    site = instance.get_site()
+    build.delay(site.id)
 
 
 class CmsConfig(AppConfig):
@@ -22,9 +24,13 @@ class CmsConfig(AppConfig):
             signal_build,
             dispatch_uid='wagtailbakery_page_published'
         )
-        page_unpublished.connect(
-            signal_build,
-            dispatch_uid='wagtailbakery_page_unpublished'
-        )
+
+        # TODO: Fix if page.delete() to not call this signal
+        # page_unpublished.connect(
+        #    signal_build,
+        #    dispatch_uid='wagtailbakery_page_unpublished'
+        # )
+
         if settings.DEBUG:
-            develop.delay()
+            if os.environ.get('RUN_MAIN', None) != 'true':
+                develop.delay()

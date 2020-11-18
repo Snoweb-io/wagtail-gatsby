@@ -1,8 +1,7 @@
-const fs = require('fs-extra');
-const path = require("path")
-const { createRemoteFileNode } = require('gatsby-source-filesystem');
-const { generateImageFragments } = require('./fragments');
-const fetch = require("node-fetch");
+import fs from 'fs-extra';
+import { createRemoteFileNode } from 'gatsby-source-filesystem';
+import { generateImageFragments } from './fragments';
+import fetch from "node-fetch";
 
 const queryBackend = (query, url, headers) =>
   fetch(url, {

@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from wagtail.core.models import Page, Site
 from wagtail.images.models import Image
 
-from cms.models import TestPage
+from cms.models import TestPage, AWSSettings, ThemeSettings
 from cms.blocks import MyTextBlock, MyImageBlock
 from cms import constants
 
@@ -41,7 +41,7 @@ class Command(BaseCommand):
                 user.groups.add(group)
             user.save()
 
-        #  Create RootPage, HomePage, Site
+        # Create RootPage, HomePage, Site
 
         page_content_type, created = ContentType.objects.get_or_create(
             model='page',
@@ -79,7 +79,7 @@ class Command(BaseCommand):
         )
         site.save()
 
-        # Page Examples -------------------------------------------------------
+        # Page Examples
 
         content_page = TestPage(
             title="Example 1 - PerfectPage",
@@ -103,3 +103,14 @@ class Command(BaseCommand):
             ])
         )
         home_page.add_child(instance=content_page)
+
+        # Settings
+
+        aws_settings = AWSSettings.for_site(site)
+        aws_settings.bucket = 'webons'
+        aws_settings.save(with_build=False)
+
+        theme_settings = ThemeSettings.for_site(site)
+        theme_settings.primary = '#C4C4C4'
+        theme_settings.secondary = '#D4D4D4'
+        theme_settings.save(with_build=False)

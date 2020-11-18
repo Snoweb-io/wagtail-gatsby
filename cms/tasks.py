@@ -16,13 +16,13 @@ app.control.purge()
 app.autodiscover_tasks()
 
 INTERVAL_BUILD = 5 * 60
-INTERVAL_PREVIEW = 10
+INTERVAL_PREVIEW = 5
 
 
 @shared_task(bind=True, max_retries=3)
-def build(self):
+def build(self, site_id):
     try:
-        management.call_command('build')
+        management.call_command('build', site_id)
     except CMSError as exc:
         self.retry(exc=exc, countdown=INTERVAL_BUILD * self.request.retries)
 

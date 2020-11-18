@@ -1,3 +1,4 @@
+import time
 import subprocess
 import logging
 from django.db.models import Q
@@ -14,19 +15,28 @@ logger = logging.getLogger('cms')
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        logger.debug("Start gatsby develop")
+        logger.debug("START develop")
 
         current_task = TaskResult.objects.filter(
             Q(task_name='cms.tasks.develop') &
             Q(status=states.STARTED)
         ).first()
 
-        # TODO: find a way to terminate gatsby develop
+        old_tasks = TaskResult.objects.all().exclude(pk=current_task.pk)
+        for task in old_tasks:
+            app.control.revoke(task.task_id, terminate=True, signal='SIGKILL')
 
-        subprocess.run(
+        # Check if `gatsby develop` process if running
+        fuser_returncode = subprocess.Popen("fuser -k 8000/tcp", shell=True).wait()
+        if fuser_returncode == 0:
+            # Kill `gatsby develop` process
+            subprocess.Popen("fuser -k 8000/tcp", shell=True).wait()
+            time.sleep(5)
+
+        # Start fresh gatsby develop commands
+        gatsby_develop_returncode = subprocess.run(
             "npm run build-plugin && gatsby clean && yes no | gatsby develop  --verbose=true",
             shell=True
         )
-        app.control.revoke(current_task.task_id, terminate=True, signal='SIGKILL')
-
-        raise DevelopError()
+        if gatsby_develop_returncode != 0:
+            raise DevelopError()
