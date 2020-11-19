@@ -10,3 +10,4 @@ celery==4.4.7
 django-celery-results==1.2.1
 ipython==7.16.1
 python-magic==0.4.18
+redis==3.5.3

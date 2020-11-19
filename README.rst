@@ -28,17 +28,6 @@ First steps
     npm install
 
 
-**If first run**
-
-::
-
-    # Django migrations
-    python manage.py migrate
-
-    # Initialize default database
-    python manage.py init
-
-
 **Add your preferences in .env file**
 
 ::
@@ -60,6 +49,18 @@ First steps
     # https://docs.celeryproject.org/en/stable/getting-started/brokers/
     # Example with redis
     CMS_BROKER_URL='redis://localhost:6379/0'
+
+
+**If first run**
+
+::
+
+    # Django migrations
+    python manage.py migrate
+
+    # Initialize default database
+    python manage.py init
+
 
 Play
 ----
